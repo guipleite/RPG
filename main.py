@@ -98,8 +98,8 @@ telainicio = pygame.image.load('room.png')
 tela2 = pygame.image.load('room2.png')
 tela3 = pygame.image.load('room3.png')
 tela4 = pygame.image.load('room4.png')
-
-
+tela5 = pygame.image.load('room4.png')#
+tela6 = pygame.image.load('room4.png')#
 
 tela = telainicio
 appleThickness = 30
@@ -179,14 +179,17 @@ def gameLoop():
 			
 		
 		if lead_x >= display_width:		#direita
-			tela = tela4#barreirana1
-		elif  lead_x < 0 :				#Esquerda
 			tela = tela3#barreirana1
+			lead_x = 0
+		elif  lead_x < 0 :				#Esquerda
+			tela = tela5#barreirana1
+			lead_x = display_width
 		elif lead_y >= display_height : #baixo
-			tela = tela3 #barreirana1
+			tela = tela4 #barreirana1
+			lead_y = 0
 		elif lead_y < 0 :   			#cima
 			tela = tela2
-				
+			lead_y = display_height
 		lead_x += lead_x_change	
 		lead_y += lead_y_change	
 		
