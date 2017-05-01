@@ -26,6 +26,9 @@ largefont = pygame.font.SysFont("arialms  ",80)
 	# randAppleX = round(random.randrange(0,display_width-appleThickness))#/10.0)*10	
 	# randAppleY = round(random.randrange(0, display_height-appleThickness))#/10.0)*10
 	# return randAppleX , randAppleY
+
+def telas (tela):
+	gameDisplay.blit(tela , [0,0])
 	
 def game_intro():
 	intro = True
@@ -43,6 +46,7 @@ def game_intro():
 				
 			
 		gameDisplay.fill(black)
+		
 		message_to_screen("Welcome to your Doom",red,-100,"large")
 		message_to_screen("Eat the fucking apples m8",white,-30)
 		message_to_screen("Eat moar get moar fat", white,10)
@@ -88,17 +92,22 @@ icon = pygame.image.load('knightr.png')
 pygame.display.set_icon(icon)
 pygame.display.update()
 
-imgr = pygame.image.load('knightr.png')
-imgl = pygame.image.load('knightl.png')
+imgl = pygame.image.load('knightr.png')
+imgr = pygame.image.load('knightl.png')
 telainicio = pygame.image.load('room.png')
 tela2 = pygame.image.load('room2.png')
+tela3 = pygame.image.load('room3.png')
+tela4 = pygame.image.load('room4.png')
 
 
+
+tela = telainicio
 appleThickness = 30
 clock = pygame.time.Clock()
 
 def gameLoop():
 	global direction
+	global tela
 	
 	appleThickness = 30
 	
@@ -160,15 +169,30 @@ def gameLoop():
 					lead_y_change = block_size
 					lead_x_change = 0
 			
+			elif event.type == pygame.KEYUP:	
+				if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
+					lead_x_change = 0
+				elif event.key == pygame.K_UP or event.key == pygame.K_DOWN :
+					#direction = "up"
+					lead_y_change = 0
+			
+			
 		
-		if lead_x >= display_width or lead_x < 0 or lead_y >= display_height or lead_y < 0 :
-			gameOver = True
+		if lead_x >= display_width:		#direita
+			tela = tela4#barreirana1
+		elif  lead_x < 0 :				#Esquerda
+			tela = tela3#barreirana1
+		elif lead_y >= display_height : #baixo
+			tela = tela3 #barreirana1
+		elif lead_y < 0 :   			#cima
+			tela = tela2
 				
 		lead_x += lead_x_change	
 		lead_y += lead_y_change	
 		
 		gameDisplay.fill(black)	
 		
+		telas(tela)
 	
 		snakehead = []
 		snakehead.append(lead_x)
@@ -178,9 +202,6 @@ def gameLoop():
 		if len(snakelist)> snakeLenght:
 			del snakelist[0]
 		
-		for segment in snakelist [:-1]:
-			if segment == snakehead:
-				gameOver = True
 			
 		snake(snakelist,block_size)
 		
