@@ -66,8 +66,6 @@ def snake (snakelist,block_size):
 		head = imgl
 
 	gameDisplay.blit(head,(snakelist[-1][0], snakelist[-1][1]))
-	# for XnY in snakelist[:-1]:
-		# pygame.draw.rect(gameDisplay, green,[XnY[0],XnY[1],block_size,block_size])
 
 def text_objetcs (text , color,size):
 	if size == 'small':
@@ -79,8 +77,6 @@ def text_objetcs (text , color,size):
 	return txtSurf , txtSurf.get_rect()	
 		
 def message_to_screen (msg,color,y_displace=0,size = "small"):
-	#screen_text = font.render(msg,True,color)
-	#gameDisplay.blit(screen_text,[display_width/2,display_height/2])
 	
 	txtSurf , txtRect = text_objetcs(msg , color,size)
 	txtRect.center = (display_width/2 ),(display_height/2)+y_displace
@@ -94,6 +90,9 @@ pygame.display.update()
 
 imgr = pygame.image.load('knightr.png')
 imgl = pygame.image.load('knightl.png')
+telainicio = pygame.image.load('room.png')
+tela2 = pygame.image.load('room2.png')
+
 
 appleThickness = 30
 clock = pygame.time.Clock()
@@ -115,7 +114,7 @@ def gameLoop():
 	snakelist = []
 	snakeLenght = 1
 	
-	#randAppleX,randAppleY = randAppleGen()
+
 	
 	while not gameExit:
 	
@@ -170,12 +169,7 @@ def gameLoop():
 		
 		gameDisplay.fill(black)	
 		
-		
-		
-		#pygame.draw.rect(gameDisplay ,white, [randAppleX,randAppleY ,appleThickness,appleThickness])
-		#gameDisplay.blit(ap, (randAppleX,randAppleY))
-		
-		
+	
 		snakehead = []
 		snakehead.append(lead_x)
 		snakehead.append(lead_y)
@@ -193,20 +187,6 @@ def gameLoop():
 		
 		pygame.display.update()
 		
-
-		# if lead_x>= randAppleX and lead_x <= randAppleX + appleThickness:
-			# if lead_y>= randAppleY and lead_y <= randAppleY + appleThickness:
-				# randAppleX = round(random.randrange(0,display_width-block_size))#/10.0)*10	
-				# randAppleY = round(random.randrange(0, display_height-block_size))#/10.0)*10
-				# snakeLenght += 1
-		
-		#colisao
-		
-		# if lead_x > randAppleX and lead_x < randAppleX + appleThickness or lead_x + block_size > randAppleX and lead_x < randAppleX + appleThickness :		
-			# if lead_y > randAppleY and lead_y < randAppleY + appleThickness or lead_y + block_size > randAppleY and lead_y < randAppleY + appleThickness :	
-				# randAppleX,randAppleY = randAppleGen()
-				# snakeLenght += 1
-				
 				
 		clock.tick(FPS)
 		
