@@ -12,7 +12,7 @@ green = (0,155,0)
 display_width = 800
 display_height = 600
 
-block_size = 20
+block_size = 30
 
 FPS = 20
 
@@ -22,6 +22,10 @@ smallfont = pygame.font.SysFont("arialms  ",25)
 medfont = pygame.font.SysFont("arialms  ",50)
 largefont = pygame.font.SysFont("arialms  ",80)
 
+# def randAppleGen():
+	# randAppleX = round(random.randrange(0,display_width-appleThickness))#/10.0)*10	
+	# randAppleY = round(random.randrange(0, display_height-appleThickness))#/10.0)*10
+	# return randAppleX , randAppleY
 	
 def game_intro():
 	intro = True
@@ -47,14 +51,23 @@ def game_intro():
 		pygame.display.update()
 		clock.tick(15)
 
-def cav (snakelist,block_size):
+def score(score):
+	text = smallfont.render("Score: " + str(score),True , white)
+	gameDisplay.blit(text,[0,0])
+		
+def snake (snakelist,block_size):
 	if direction == "right":
-		head = knight
+		head = imgr
 	if direction == "left":
-		head = pygame.transform.rotate(img , 90)
+		head = imgl
+	if direction == "up":
+		head = imgr
+	if direction == "down":
+		head = imgl
 
-	gameDisplay.blit(knight, ())
-	
+	gameDisplay.blit(head,(snakelist[-1][0], snakelist[-1][1]))
+	# for XnY in snakelist[:-1]:
+		# pygame.draw.rect(gameDisplay, green,[XnY[0],XnY[1],block_size,block_size])
 
 def text_objetcs (text , color,size):
 	if size == 'small':
@@ -75,12 +88,13 @@ def message_to_screen (msg,color,y_displace=0,size = "small"):
 	
 gameDisplay = pygame.display.set_mode((display_width,display_height))
 pygame.display.set_caption("Dungeon Runners")
-icon = pygame.image.load('knight.png')
+icon = pygame.image.load('knightr.png')
 pygame.display.set_icon(icon)
 pygame.display.update()
 
+imgr = pygame.image.load('knightr.png')
+imgl = pygame.image.load('knightl.png')
 
-knight = pygame.image.load('knight.png')
 appleThickness = 30
 clock = pygame.time.Clock()
 
@@ -95,9 +109,13 @@ def gameLoop():
 
 	lead_x = display_width/2
 	lead_y = display_height/2
-	lead_x_change = 0
+	lead_x_change = 10
 	lead_y_change = 0
 	
+	snakelist = []
+	snakeLenght = 1
+	
+	#randAppleX,randAppleY = randAppleGen()
 	
 	while not gameExit:
 	
@@ -128,34 +146,50 @@ def gameLoop():
 			if event.type == pygame.KEYDOWN:
 				if event.key == pygame.K_LEFT:
 					direction = "left"
-					lead_x_change = -appleThickness
+					lead_x_change = -block_size
+					lead_y_change = 0
 				if event.key == pygame.K_RIGHT:
 					direction = "right"
-					lead_x_change = appleThickness
+					lead_x_change = block_size
+					lead_y_change = 0
 				if event.key == pygame.K_UP:
 					direction = "up"
-					lead_y_change = -appleThickness
+					lead_y_change = -block_size
+					lead_x_change = 0
 				if event.key == pygame.K_DOWN:
 					direction = "down"
-					lead_y_change = -appleThickness
-		
-		lead_x += lead_x_change
-		lead_y += lead_y_change
-		
-		gameDisplay.blit(knight,(display_width/2 ),(display_height/2))
+					lead_y_change = block_size
+					lead_x_change = 0
+			
 		
 		if lead_x >= display_width or lead_x < 0 or lead_y >= display_height or lead_y < 0 :
 			gameOver = True
 				
-	
-		gameDisplay.fill(white)	
-	
+		lead_x += lead_x_change	
+		lead_y += lead_y_change	
+		
+		gameDisplay.fill(black)	
+		
+		
 		
 		#pygame.draw.rect(gameDisplay ,white, [randAppleX,randAppleY ,appleThickness,appleThickness])
-
-	
+		#gameDisplay.blit(ap, (randAppleX,randAppleY))
+		
+		
+		snakehead = []
+		snakehead.append(lead_x)
+		snakehead.append(lead_y)
+		snakelist.append(snakehead)
+		
+		if len(snakelist)> snakeLenght:
+			del snakelist[0]
+		
+		for segment in snakelist [:-1]:
+			if segment == snakehead:
+				gameOver = True
 			
-	
+		snake(snakelist,block_size)
+		
 		
 		pygame.display.update()
 		
@@ -167,7 +201,11 @@ def gameLoop():
 				# snakeLenght += 1
 		
 		#colisao
-	
+		
+		# if lead_x > randAppleX and lead_x < randAppleX + appleThickness or lead_x + block_size > randAppleX and lead_x < randAppleX + appleThickness :		
+			# if lead_y > randAppleY and lead_y < randAppleY + appleThickness or lead_y + block_size > randAppleY and lead_y < randAppleY + appleThickness :	
+				# randAppleX,randAppleY = randAppleGen()
+				# snakeLenght += 1
 				
 				
 		clock.tick(FPS)
