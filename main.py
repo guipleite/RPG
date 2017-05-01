@@ -47,10 +47,10 @@ def game_intro():
 			
 		gameDisplay.fill(black)
 		
-		message_to_screen("Welcome to your Doom",red,-100,"large")
-		message_to_screen("Eat the fucking apples m8",white,-30)
-		message_to_screen("Eat moar get moar fat", white,10)
-		message_to_screen("C para continuar ou Q para sair", white,50)
+		message_to_screen("Dungeon Runners",red,-100,"large")
+		message_to_screen("Use as cetas do teclado para se mover",white,-30)
+		message_to_screen("em progresso", white,10)
+		message_to_screen("", white,50)
 
 		pygame.display.update()
 		clock.tick(15)
@@ -98,7 +98,7 @@ telainicio = pygame.image.load('room.png')
 tela2 = pygame.image.load('room2.png')
 tela3 = pygame.image.load('room3.png')
 tela4 = pygame.image.load('room4.png')
-tela5 = pygame.image.load('room4.png')#
+tela5 = pygame.image.load('room5.png')
 tela6 = pygame.image.load('room4.png')#
 
 tela = telainicio
@@ -178,18 +178,53 @@ def gameLoop():
 			
 			
 		
-		if lead_x >= display_width:		#direita
-			tela = tela3#barreirana1
-			lead_x = 0
-		elif  lead_x < 0 :				#Esquerda
-			tela = tela5#barreirana1
-			lead_x = display_width
-		elif lead_y >= display_height : #baixo
-			tela = tela4 #barreirana1
-			lead_y = 0
-		elif lead_y < 0 :   			#cima
-			tela = tela2
-			lead_y = display_height
+		if tela == telainicio:
+		
+			if lead_y < 0 :   			#cima
+				tela = tela2
+				lead_y = display_height-5
+				
+		
+		if tela == tela2:
+	
+			if lead_x >= display_width:		#direita
+				tela = tela3
+				lead_x = 0+5
+				
+			elif lead_y >= display_height : #baixo
+				tela = telainicio 
+				lead_y = 0+5
+				
+
+		if tela == tela3:
+		
+			if lead_x >= display_width:		#direita
+				tela = tela4
+				lead_x = 0+5
+			elif  lead_x < 0 :				#Esquerda
+				tela = tela2
+				lead_x = display_width+5
+		
+		if tela == tela4:
+			
+			if lead_y >= display_height : #baixo
+				tela = tela5 #barreirana1
+				lead_y = 0+5
+			
+			elif  lead_x < 0 :				#Esquerda
+				tela = tela3
+				lead_x = display_width+5
+			
+		if tela == tela5:
+		
+			if  lead_x < 0 :				#Esquerda
+				tela = tela6
+				lead_x = display_width+5
+			
+			elif lead_y < 0 :   			#cima
+				tela = tela4
+				lead_y = display_height-5
+				
 		lead_x += lead_x_change	
 		lead_y += lead_y_change	
 		
