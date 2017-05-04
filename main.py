@@ -22,11 +22,37 @@ smallfont = pygame.font.SysFont("arialms  ",25)
 medfont = pygame.font.SysFont("arialms  ",50)
 largefont = pygame.font.SysFont("arialms  ",80)
 
+#pinball wizard 8bit brakinhg the law
+
+
 # def randAppleGen():
 	# randAppleX = round(random.randrange(0,display_width-appleThickness))#/10.0)*10	
 	# randAppleY = round(random.randrange(0, display_height-appleThickness))#/10.0)*10
 	# return randAppleX , randAppleY
 
+def pause():
+	paused = True
+	
+				
+	message_to_screen("Pausado" , white , -100, "large")
+	message_to_screen("C para continuar Q para sair" , white , 25)
+	
+	pygame.display.update()
+	clock.tick(5)		
+	
+	while paused:
+		for event in pygame.event.get():
+			if event.type == pygame.QUIT:
+				pygame.quit()
+				quit()
+			if event.type == pygame.KEYDOWN:
+				if event.key == pygame.K_c:
+					paused = False
+				
+				elif event.key == pygame.K_q:
+					pygame.quit()
+					quit()
+	
 def telas (tela):
 	gameDisplay.blit(tela , [0,0])
 	
@@ -49,7 +75,7 @@ def game_intro():
 		
 		message_to_screen("Dungeon Runners",red,-100,"large")
 		message_to_screen("Use as cetas do teclado para se mover",white,-30)
-		message_to_screen("em progresso", white,10)
+		message_to_screen("C para jogar  e Q para sair", white,10)
 		message_to_screen("", white,50)
 
 		pygame.display.update()
@@ -64,10 +90,10 @@ def snake (snakelist,block_size):
 		head = imgr
 	if direction == "left":
 		head = imgl
-	if direction == "up":
-		head = imgr
-	if direction == "down":
-		head = imgl
+	#if direction == "up":
+	#	head = imgr
+	#if direction == "down":
+	#	head = imgl
 
 	gameDisplay.blit(head,(snakelist[-1][0], snakelist[-1][1]))
 
@@ -115,7 +141,7 @@ def gameLoop():
 	gameExit = False
 	gameOver = False
 
-	lead_x = display_width/2
+	lead_x = 30 #display_width/2
 	lead_y = display_height/2
 	lead_x_change = 10
 	lead_y_change = 0
@@ -127,11 +153,16 @@ def gameLoop():
 	
 	while not gameExit:
 	
-		while gameOver == True:
+	
+		
+		if gameOver == True:	
 			gameDisplay.fill(black)
 			message_to_screen("GAME OVER",red,size = 'large')
 			message_to_screen("C para continuar ou Q para sair",white, -50,size = 'medium')
+			pygame.display.update()
 			
+	
+		while gameOver == True:		
 			
 			for event in pygame.event.get():
 				if event.type == pygame.QUIT:	
@@ -143,8 +174,8 @@ def gameLoop():
 						gameOver = False
 					if event.key  == pygame.K_c:
 						gameLoop()
-			
-			pygame.display.update()
+  
+		
 
 		for event in pygame.event.get():
 			#print(event)
@@ -156,20 +187,23 @@ def gameLoop():
 					direction = "left"
 					lead_x_change = -block_size
 					lead_y_change = 0
-				if event.key == pygame.K_RIGHT:
+				elif event.key == pygame.K_RIGHT:
 					direction = "right"
 					lead_x_change = block_size
 					lead_y_change = 0
-				if event.key == pygame.K_UP:
-					direction = "up"
+				elif event.key == pygame.K_UP:
+					#direction = "up"
 					lead_y_change = -block_size
 					lead_x_change = 0
-				if event.key == pygame.K_DOWN:
-					direction = "down"
+				elif event.key == pygame.K_DOWN:
+					#direction = "down"
 					lead_y_change = block_size
 					lead_x_change = 0
-			
-			elif event.type == pygame.KEYUP:	
+				
+				elif event.key == pygame.K_p:
+					pause()
+				
+			if event.type == pygame.KEYUP:	
 				if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT:
 					lead_x_change = 0
 				elif event.key == pygame.K_UP or event.key == pygame.K_DOWN :
